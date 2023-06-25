@@ -32,16 +32,7 @@ public class FlightPlanRepository implements IFlightPlanRepository {
     if (flightPlan.getDispatched())
       return airwayOccupations;
 
-    double distance = AirTrafficHandler.calculateDistance(
-      from.getLatitude(),
-      to.getLatitude(),
-      from.getLongitude(),
-      to.getLongitude(),
-      0,
-      0);
-
-    int hourSlots = (int) Math.ceil((distance / flightPlan.getCruisingSpeed()) * 60);
-    int startHour = AirTrafficHandler.getHourOfDay(flightPlan.getDate());
+  
 
     List<Airway> airways = flightPlan
       .getAirRoute()
@@ -56,9 +47,6 @@ public class FlightPlanRepository implements IFlightPlanRepository {
       airwayOccupations.addAll(airway
         .getAirwayOccupations()
         .stream()
-        .filter(airwayOccupation -> 
-          AirTrafficHandler.checkTimeInterval(AirTrafficHandler.getHourOfDay(airwayOccupation.getDate()), startHour, hourSlots) &&
-          airwayOccupation.getAltitude() == flightPlan.getAltitude())
         .toList());
     }
     
@@ -73,16 +61,6 @@ public class FlightPlanRepository implements IFlightPlanRepository {
         flightPlan.setDispatched(true);
         flightPlanCrud.save(flightPlan);
 
-        double distance = AirTrafficHandler.calculateDistance(
-          from.getLatitude(),
-          to.getLatitude(),
-          from.getLongitude(),
-          to.getLongitude(),
-          0,
-          0);
-
-        int hourSlots = (int) Math.ceil((distance / flightPlan.getCruisingSpeed()) * 60);
-
         Airway airway = flightPlan
           .getAirRoute()
           .getAirways()
@@ -93,8 +71,7 @@ public class FlightPlanRepository implements IFlightPlanRepository {
           .findFirst()
           .get();
       
-        for (int hour = 0; hour < hourSlots; hour++)
-          airwayOccupationCrud.save(new AirwayOccupation(AirTrafficHandler.addHour(flightPlan.getDate(), hour), flightPlan.getAltitude(), airway));
+        
       }
     } catch (IllegalArgumentException ex) {
       return false;
@@ -111,24 +88,13 @@ public class FlightPlanRepository implements IFlightPlanRepository {
         flightPlan.setDispatched(false);
         flightPlanCrud.save(flightPlan);
 
-        double distance = AirTrafficHandler.calculateDistance(
-          from.getLatitude(),
-          to.getLatitude(),
-          from.getLongitude(),
-          to.getLongitude(),
-          0,
-          0);
 
-        int hourSlots = (int) Math.ceil((distance / flightPlan.getCruisingSpeed()) * 60);
-        int startHour = AirTrafficHandler.getHourOfDay(flightPlan.getDate());
+   
 
         for (Airway airway : flightPlan.getAirRoute().getAirways()) {
           List<AirwayOccupation> airwayOccupations = airway
             .getAirwayOccupations()
             .stream()
-            .filter(airwayOccupation -> 
-              AirTrafficHandler.checkTimeInterval(AirTrafficHandler.getHourOfDay(airwayOccupation.getDate()), startHour, hourSlots) &&
-              AirTrafficHandler.isSameDay(airwayOccupation.getDate(), flightPlan.getDate()))
             .toList();
           
           airwayOccupationCrud.deleteAll(airwayOccupations);

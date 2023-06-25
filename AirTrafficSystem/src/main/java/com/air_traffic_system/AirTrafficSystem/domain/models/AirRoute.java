@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "air_routes")
+@Table(name = "rotas")
 public class AirRoute {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

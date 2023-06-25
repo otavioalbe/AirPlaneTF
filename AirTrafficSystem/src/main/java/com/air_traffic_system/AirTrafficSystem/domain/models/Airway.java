@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "airways")
+@Table(name = "LinhasAereas")
 public class Airway {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,8 @@ public class Airway {
 
   public Airway() {}
 
-  public Airway(String name, List<AirwayOccupation> airwayOccupations, AirRoute airRoute, GeoRef from, GeoRef to) {
+  public Airway(String name, AirRoute airRoute, GeoRef from, GeoRef to) {
     this.name = name;
-    this.airwayOccupations = airwayOccupations;
     this.airRoute = airRoute;
     this.from = from;
     this.to = to;

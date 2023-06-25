@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping("/airway")
+@RequestMapping("/seta")
 public class FlightPlanController {
   private CheckFlightPlanUC checkFlightPlanUC;
   private DispatchFlightPlanUC dispatchFlightPlanUC;
@@ -32,7 +32,7 @@ public class FlightPlanController {
     this.cancelFlightPlanUC = cancelFlightPlanUC;
   }
 
-  @GetMapping("/checkFlightPlan")
+  @GetMapping("/avalia")
   @CrossOrigin(origins = "*")
   @ApiResponses(value = {
     @ApiResponse(code = 200, message = "Returns a list of air occupations"),
@@ -43,13 +43,13 @@ public class FlightPlanController {
     return checkFlightPlanUC.run(flightNumber, geoRefFrom, geoRefTo);
   }
 
-  @PostMapping("/dispatchFlightPlan")
+  @PostMapping("/cria")
   @CrossOrigin(origins = "*")
   public boolean dispatchFlightPlan(int flightNumber, String geoRefFrom, String geoRefTo) {
     return dispatchFlightPlanUC.run(flightNumber, geoRefFrom, geoRefTo);
   }
 
-  @PostMapping("/cancelFlightPlan")
+  @PostMapping("/cancelar")
   @CrossOrigin(origins = "*")
   public boolean getGeoRefByName(int flightNumber, String geoRefFrom, String geoRefTo) {
     return cancelFlightPlanUC.run(flightNumber, geoRefFrom, geoRefTo);

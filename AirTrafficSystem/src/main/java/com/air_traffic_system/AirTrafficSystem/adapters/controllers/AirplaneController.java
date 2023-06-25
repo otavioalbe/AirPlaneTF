@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping("/airplane")
+@RequestMapping("/seta")
 public class AirplaneController {
   private InsertAirplanesUC insertAirplanesUC;
   private GetAllAirplanesUC getAllAirplanesUC;
@@ -31,7 +31,7 @@ public class AirplaneController {
     this.getAllAirplanesUC = getAllAirplanesUC;
   }
 
-  @GetMapping("/getAll")
+  @GetMapping("/visualizar")
   @CrossOrigin(origins = "*")
   @ApiResponses(value = {
     @ApiResponse(code = 200, message = "Returns a list of airplanes"),
@@ -42,7 +42,7 @@ public class AirplaneController {
     return getAllAirplanesUC.run();
   }
 
-  @PostMapping("/insert")
+  @PostMapping("/criar")
   @CrossOrigin(origins = "*")
   public boolean insertAirplane(AirplaneDTO airplaneDto) {
     Airplane airplane = new Airplane(

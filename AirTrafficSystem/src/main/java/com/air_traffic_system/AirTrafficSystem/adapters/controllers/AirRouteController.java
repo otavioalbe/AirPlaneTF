@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping("/airRoute")
+@RequestMapping("/seta")
 public class AirRouteController {
   private GetAllAirRoutesByDestinationUC getAllAirRoutesByDestinationUC;
 
@@ -25,13 +25,13 @@ public class AirRouteController {
     this.getAllAirRoutesByDestinationUC = getAllAirRoutesByDestinationUC;
   }
 
-  @GetMapping("/getAllAirRoutesByDestination")
+  @GetMapping("/rotas")
   @CrossOrigin(origins = "*")
   @ApiResponses(value = {
     @ApiResponse(code = 200, message = "Returns a list of air routes by destination"),
     @ApiResponse(code = 500, message = "A server error occurred"),
   })
-  @RequestMapping(value = "/getAllAirRoutesByDestination", method = RequestMethod.GET, produces="application/json")
+  @RequestMapping(value = "/rotas", method = RequestMethod.GET, produces="application/json")
   public List<AirRoute> getAllAirRoutesByDestination(String geoRefFrom, String geoRefTo) {
     return getAllAirRoutesByDestinationUC.run(geoRefFrom, geoRefTo);
   }

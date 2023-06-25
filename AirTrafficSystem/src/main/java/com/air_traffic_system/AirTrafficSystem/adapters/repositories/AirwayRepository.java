@@ -28,16 +28,9 @@ public class AirwayRepository implements IAirwayRepository {
   }
 
   public List<AirwayFreeSlotDTO> getFreeSlots(Date date, Float cruisingSpeed, GeoRef from, GeoRef to) {
-    double distance = AirTrafficHandler.calculateDistance(
-      from.getLatitude(),
-      to.getLatitude(),
-      from.getLongitude(),
-      to.getLongitude(),
-      0,
-      0);
 
-    int hourSlots = (int) Math.ceil((distance / cruisingSpeed) * 60);
-    int startHour = AirTrafficHandler.getHourOfDay(date);
+
+
 
     List<Airway> airways = airwayCrud
       .findAll()
@@ -53,20 +46,13 @@ public class AirwayRepository implements IAirwayRepository {
       List<AirwayOccupation> airwayOccupations = airway
         .getAirwayOccupations()
         .stream()
-        .filter(airwayOccupation -> 
-          AirTrafficHandler.checkTimeInterval(AirTrafficHandler.getHourOfDay(airwayOccupation.getDate()), startHour, hourSlots) &&
-          AirTrafficHandler.isSameDay(airwayOccupation.getDate(), date))
         .toList();
       
       for (int i = 25; i <= 35; i++) {
         final int altitude = i * 1000;
         boolean isOccupied = airwayOccupations.stream().anyMatch(airwayOccupation -> airwayOccupation.getAltitude() == altitude * 1000);
         
-        if (!isOccupied) {
-          for (int hour = 0; hour < hourSlots; hour++) {
-            airwayFreeSlots.add(new AirwayFreeSlotDTO(startHour + hour, date, altitude * 1000, airway.getName()));
-          }
-        }
+       
       }
     }
     
