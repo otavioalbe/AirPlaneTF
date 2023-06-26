@@ -18,9 +18,9 @@ import javax.persistence.Table;
 public class FlightPlan {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-  @Column(unique=true)
   private int flightNumber;
+  @Column(unique=true)
+  private int rota;
   private boolean dispatched;
   private Date date;
   private Integer altitude;
@@ -47,15 +47,15 @@ public class FlightPlan {
 }
 
 @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @JoinColumn(name="id", nullable=false, insertable=false, updatable=false)
+  @JoinColumn(name="aviao", nullable=false, insertable=false, updatable=false)
   private Airplane airplane;
 
   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @JoinColumn(name="id", nullable=false, insertable=false, updatable=false)
+  @JoinColumn(name="rota", nullable=false, insertable=false, updatable=false)
   private AirRoute airRoute;
 
-  public int getId() {
-    return id;
+  public int getRota() {
+    return rota;
   }
   public int getFlightNumber() {
     return flightNumber;
