@@ -26,7 +26,6 @@ public class FlightPlan {
   private Integer altitude;
   private Float cruisingSpeed;
 
-  public FlightPlan() {}
 
   public FlightPlan(
     int flightNumber,
@@ -44,7 +43,10 @@ public class FlightPlan {
     this.dispatched = false;
   }
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  public FlightPlan() {
+}
+
+@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name="id", nullable=false, insertable=false, updatable=false)
   private Airplane airplane;
 

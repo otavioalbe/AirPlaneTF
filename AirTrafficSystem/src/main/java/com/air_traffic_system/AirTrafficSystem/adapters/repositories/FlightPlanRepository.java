@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.air_traffic_system.AirTrafficSystem.adapters.uils.AirTrafficHandler;
+import com.air_traffic_system.AirTrafficSystem.domain.models.Airplane;
 import com.air_traffic_system.AirTrafficSystem.domain.models.Airway;
 import com.air_traffic_system.AirTrafficSystem.domain.models.AirwayOccupation;
 import com.air_traffic_system.AirTrafficSystem.domain.models.FlightPlan;
@@ -18,12 +19,32 @@ public class FlightPlanRepository implements IFlightPlanRepository {
   private IFlightPlanCrud flightPlanCrud;
   private IAirwayOccupationCrud airwayOccupationCrud;
 
+
+
+  
+ 
+
+
   @Autowired
   public FlightPlanRepository(IFlightPlanCrud flightPlanCrud, IAirwayOccupationCrud airwayOccupationCrud) {
     this.flightPlanCrud = flightPlanCrud;
     this.airwayOccupationCrud = airwayOccupationCrud;
   }
 
+ public List<FlightPlan> getAll() {
+    List<FlightPlan> flightPlans = flightPlanCrud.findAll();
+    return flightPlans;
+  }
+
+  public boolean insert(FlightPlan flightPlan) {
+    try {
+      flightPlanCrud.save(flightPlan);
+    } catch (IllegalArgumentException ex) {
+      return false;
+    }
+
+    return true;
+  }
   public List<AirwayOccupation> check(int flightNumber, GeoRef from, GeoRef to) {
     List<AirwayOccupation> airwayOccupations = new ArrayList<>();
 

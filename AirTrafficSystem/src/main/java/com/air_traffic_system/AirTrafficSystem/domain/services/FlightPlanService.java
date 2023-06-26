@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.air_traffic_system.AirTrafficSystem.domain.models.Airplane;
 import com.air_traffic_system.AirTrafficSystem.domain.models.AirwayOccupation;
+import com.air_traffic_system.AirTrafficSystem.domain.models.FlightPlan;
 import com.air_traffic_system.AirTrafficSystem.domain.models.GeoRef;
 import com.air_traffic_system.AirTrafficSystem.domain.repositories.IAirwayRepository;
 import com.air_traffic_system.AirTrafficSystem.domain.repositories.IFlightPlanRepository;
@@ -40,5 +42,13 @@ public class FlightPlanService {
     GeoRef to = airwayRepository.getGeoRefByName(geoRefTo);
 
     return flightPlanRepository.cancel(flightNumber, from, to);
+  }
+
+  public List<FlightPlan> getAllFlightPlans(){
+    return flightPlanRepository.getAll();
+  }
+
+  public boolean insertFightPlans(FlightPlan flightPlan){
+    return flightPlanRepository.insert(flightPlan);
   }
 }

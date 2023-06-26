@@ -2,10 +2,19 @@ package com.air_traffic_system.AirTrafficSystem.adapters.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.air_traffic_system.AirTrafficSystem.application.dtos.AirplaneDTO;
+import com.air_traffic_system.AirTrafficSystem.application.dtos.FightPlanDTO;
 import com.air_traffic_system.AirTrafficSystem.application.useCases.CancelFlightPlanUC;
 import com.air_traffic_system.AirTrafficSystem.application.useCases.CheckFlightPlanUC;
 import com.air_traffic_system.AirTrafficSystem.application.useCases.DispatchFlightPlanUC;
+import com.air_traffic_system.AirTrafficSystem.application.useCases.GetAllAirplanesUC;
+import com.air_traffic_system.AirTrafficSystem.application.useCases.GetAllFightPlanUC;
+import com.air_traffic_system.AirTrafficSystem.application.useCases.InsertAirplanesUC;
+import com.air_traffic_system.AirTrafficSystem.application.useCases.InsertFlightPlanUC;
+import com.air_traffic_system.AirTrafficSystem.domain.models.Airplane;
 import com.air_traffic_system.AirTrafficSystem.domain.models.AirwayOccupation;
+import com.air_traffic_system.AirTrafficSystem.domain.models.FlightPlan;
+
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -25,11 +34,17 @@ public class FlightPlanController {
   private DispatchFlightPlanUC dispatchFlightPlanUC;
   private CancelFlightPlanUC cancelFlightPlanUC;
 
+   private InsertFlightPlanUC insertFlightPlanUC;
+  private GetAllFightPlanUC getAllFightPlanUC;
+
   @Autowired
-  public FlightPlanController(CheckFlightPlanUC checkFlightPlanUC, DispatchFlightPlanUC dispatchFlightPlanUC, CancelFlightPlanUC cancelFlightPlanUC) {
+  public FlightPlanController(CheckFlightPlanUC checkFlightPlanUC, DispatchFlightPlanUC dispatchFlightPlanUC, CancelFlightPlanUC cancelFlightPlanUC, InsertFlightPlanUC insertFlightPlanUC,GetAllFightPlanUC getAllFightPlanUC ) {
     this.checkFlightPlanUC = checkFlightPlanUC;
     this.dispatchFlightPlanUC = dispatchFlightPlanUC;
     this.cancelFlightPlanUC = cancelFlightPlanUC;
+
+    this.insertFlightPlanUC = insertFlightPlanUC;
+    this.getAllFightPlanUC = getAllFightPlanUC;
   }
 
   @GetMapping("/avalia")
@@ -54,4 +69,26 @@ public class FlightPlanController {
   public boolean getGeoRefByName(int flightNumber, String geoRefFrom, String geoRefTo) {
     return cancelFlightPlanUC.run(flightNumber, geoRefFrom, geoRefTo);
   }
+
+
+  @GetMapping("/visualizar")
+  @CrossOrigin(origins = "*")
+  @ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Returns a list of airplanes"),
+    @ApiResponse(code = 500, message = "A server error occurred"),
+  })
+  @RequestMapping(value = "/ver", method = RequestMethod.GET, produces="application/json")
+  public List<FlightPlan> getAllFlightPlans() {
+    return getAllFightPlanUC.run();
+  }
+
+  @PostMapping("/criar2")
+  @CrossOrigin(origins = "*")
+  public boolean insertFightPlans(FightPlanDTO fightPlanDTO) {
+    FlightPlan flightPlan = new FlightPlan(
+   
+    );
+
+    return insertFlightPlanUC.run(flightPlan);
+  } 
 }
