@@ -37,7 +37,7 @@ public class AirplaneController {
     @ApiResponse(code = 200, message = "Returns a list of airplanes"),
     @ApiResponse(code = 500, message = "A server error occurred"),
   })
-  @RequestMapping(value = "/getAll", method = RequestMethod.GET, produces="application/json")
+  @RequestMapping(value = "/visualizar", method = RequestMethod.GET, produces="application/json")
   public List<Airplane> getAllAirplanes() {
     return getAllAirplanesUC.run();
   }
